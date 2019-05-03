@@ -13,13 +13,18 @@ const TableInfoQueryTemplate = 'SELECT ' +
   'COLUMN_COMMENT, COLUMN_TYPE ' +
   'FROM information_schema.columns ' + "WHERE table_schema='%s' AND table_name='%s'";
 
-function ZongJi(dsn) {
+function ZongJi(dsn, tableMap) {
   EventEmitter.call(this);
 
   this._options({});
   this._filters({});
   this.ctrlCallbacks = [];
-  this.tableMap = {};
+
+  this.connection = mysql.createConnection(binlogDsn);
+  this.connection.on('error', this._emitError.bind(this));
+  this.connection.on('unhandledError', this._emitError.bind(this));
+
+  this.tableMap = tableMap || {};
   this.ready = false;
   this.useChecksum = false;
 
