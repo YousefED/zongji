@@ -11,7 +11,7 @@ var alternateDsn = [
   { type: Pool, config: function(obj) { return obj.config.connectionConfig; } }
 ];
 
-function ZongJi(dsn, options) {
+function ZongJi(dsn, options, tableMap) {
   this.set(options);
 
   EventEmitter.call(this);
@@ -45,7 +45,7 @@ function ZongJi(dsn, options) {
   this.connection.on('error', this._emitError.bind(this));
   this.connection.on('unhandledError', this._emitError.bind(this));
 
-  this.tableMap = {};
+  this.tableMap = tableMap || {};
   this.ready = false;
   this.useChecksum = false;
   // Include 'rotate' events to keep these properties updated
