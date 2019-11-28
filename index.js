@@ -241,7 +241,7 @@ ZongJi.prototype.start = function(options) {
         case 'TableMap':
           var tableMap = self.tableMap[event.tableId];
 
-          if (!tableMap) {
+          if (!tableMap || tableMap.tableName !== event.tableName || tableMap.columns.length !== event.columnCount) {
             self.connection.pause();
             self._fetchTableInfo(event, function() {
               // merge the column info with metadata
